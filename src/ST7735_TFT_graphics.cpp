@@ -25,6 +25,8 @@ ST7735_TFT_graphics::ST7735_TFT_graphics(uint8_t w, uint8_t h) {
 
 	if(IMScreenBuff == NULL) {
 		std::cout << "ST7735_TFT_graphics: Unable to allocate virtual screen buffer" << std::endl;
+	} else {
+		std::cout << "IM screen initialized!" << std::endl;
 	}
 }
 
