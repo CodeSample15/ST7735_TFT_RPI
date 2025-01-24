@@ -50,9 +50,9 @@ uint8_t Setup(void)
 // ** USER OPTION 1 GPIO/SPI TYPE SW **
 	int8_t RST_TFT  = 25;
 	int8_t DC_TFT   = 24;
-	int8_t SCLK_TFT = 5;
-	int8_t SDIN_TFT = 6;
-	int8_t CS_TFT   = 8;
+	int8_t SCLK_TFT = 6;
+	int8_t SDIN_TFT = 5;
+	int8_t CS_TFT   = 21;
 	myTFT.TFTSetupGPIO(RST_TFT, DC_TFT, CS_TFT, SCLK_TFT, SDIN_TFT);
 //*********************************************
 
@@ -60,7 +60,7 @@ uint8_t Setup(void)
 	uint8_t OFFSET_COL = 0;  // 2, These offsets can be adjusted for any issues->
 	uint8_t OFFSET_ROW = 0; // 3, with manufacture tolerance/defects
 	uint16_t TFT_WIDTH = 128;// Screen width in pixels
-	uint16_t TFT_HEIGHT = 128; // Screen height in pixels
+	uint16_t TFT_HEIGHT = 160; // Screen height in pixels
 	myTFT.TFTInitScreenSize(OFFSET_COL, OFFSET_ROW , TFT_WIDTH , TFT_HEIGHT);
 // ***********************************
 
