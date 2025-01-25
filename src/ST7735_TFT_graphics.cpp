@@ -79,8 +79,22 @@ void ST7735_TFT_graphics ::IMDisplay() {
 		return;
 	}
 
+	uint8_t* buffer = (uint8_t*)malloc(IMScreenBuffLen);
+	if (buffer == NULL) // check malloc
+	{
+		std::cout << "Error IMDisplay 3: MALLOC could not assign memory " << std::endl;
+		return 3;
+	}
+
+	//copy data to newly allocated block
+	for(int i=0; i<IMScreenBuffLen; i++)
+		buffer[i] = IMScreenBuff[i];
+
 	TFTsetAddrWindow(0, 0, IMScreenWidth - 1, IMScreenHeight - 1);
-	spiWriteDataBuffer(IMScreenBuff, IMScreenHeight*IMScreenWidth*sizeof(uint16_t)); //i think this is how it works, idk
+	spiWriteDataBuffer(IMScreenBuff, IMScreenBuffLen);
+
+	//free new allocation
+	free(buffer);
 }
 
 /*!
