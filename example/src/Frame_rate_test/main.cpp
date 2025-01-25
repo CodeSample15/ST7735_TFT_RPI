@@ -56,9 +56,12 @@ int8_t Setup(void)
 	}
 	
 // ** USER OPTION 1 GPIO/SPI TYPE HW OR SW **
-	int8_t RST_TFT  =  25;
-	int8_t DC_TFT   =  24;
-	myTFT.TFTSetupGPIO(RST_TFT, DC_TFT);
+	int8_t RST_TFT  = 25;
+	int8_t DC_TFT   = 24;
+	int8_t SCLK_TFT = 6;
+	int8_t SDIN_TFT = 5;
+	int8_t CS_TFT   = 21;
+	myTFT.TFTSetupGPIO(RST_TFT, DC_TFT, CS_TFT, SCLK_TFT, SDIN_TFT);
 //*********************************************
 
 // ** USER OPTION 2 Screen Setup **
