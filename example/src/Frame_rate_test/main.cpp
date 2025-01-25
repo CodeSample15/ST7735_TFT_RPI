@@ -73,7 +73,7 @@ int8_t Setup(void)
 // ***********************************
 
 // ** USER OPTION 3 PCB_TYPE + SPI baud rate + SPI_CE_PIN**
-	uint32_t SCLK_FREQ =  8000000 ; // HW Spi freq in Hertz , MAX 125 Mhz MIN 30Khz
+	uint32_t SCLK_FREQ =  125000000 ; // HW Spi freq in Hertz , MAX 125 Mhz MIN 30Khz
 	uint8_t SPI_CE_PIN = 0; // which HW SPI chip enable pin to use,  0 or 1
 	// pass enum to param1 ,4 choices,see README
 		if(myTFT.TFTInitPCBType(myTFT.TFT_ST7735R_Red, SCLK_FREQ, SPI_CE_PIN) != 0)
