@@ -86,7 +86,9 @@ void IMTest(void)
 {
     myTFT.IMClear();
     for(int x=0; x<128; x++) {
-        myTFT.IMDrawPixel(x, 0, 0xFFFF);
+		for(int y=0; y<160; y++) {
+			myTFT.IMDrawPixel(x, y, 0xFAFF);
+		}
     }
     myTFT.IMDisplay();
 

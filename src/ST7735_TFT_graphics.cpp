@@ -54,6 +54,10 @@ void ST7735_TFT_graphics ::IMClear() {
 	@param color Pixel color
 */
 void ST7735_TFT_graphics ::IMDrawPixel(uint8_t x, uint8_t y, uint16_t color) {
+	if(!IMScreenBuff) {
+		std::cout << "IMDrawPixel: IMScreenBuff is NULL!" << std::endl;
+		return;
+	}
 
 	uint8_t hi = color >> 8;
 	uint8_t lo = color & 0xFF;
@@ -70,6 +74,11 @@ void ST7735_TFT_graphics ::IMDrawPixel(uint8_t x, uint8_t y, uint16_t color) {
 	@brief Send in-memory screen buffer to physical screen
  */
 void ST7735_TFT_graphics ::IMDisplay() {
+	if(!IMScreenBuff) {
+		std::cout << "IMDisplay: IMScreenBuff is NULL!" << std::endl;
+		return;
+	}
+
 	TFTsetAddrWindow(0, 0, IMScreenWidth - 1, IMScreenHeight - 1);
 	spiWriteDataBuffer(IMScreenBuff, IMScreenHeight*IMScreenWidth*sizeof(uint16_t)); //i think this is how it works, idk
 }
