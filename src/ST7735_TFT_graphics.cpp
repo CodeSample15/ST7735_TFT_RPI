@@ -87,7 +87,7 @@ void ST7735_TFT_graphics ::IMDisplay() {
 	}
 
 	//copy data to newly allocated block
-	for(int i=0; i<IMScreenBuffLen; i++)
+	for(uint32_t i=0; i<IMScreenBuffLen; i++)
 		buffer[i] = IMScreenBuff[i];
 
 	TFTsetAddrWindow(0, 0, IMScreenWidth - 1, IMScreenHeight - 1);
