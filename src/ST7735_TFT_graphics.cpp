@@ -83,7 +83,7 @@ void ST7735_TFT_graphics ::IMDisplay() {
 	if (buffer == NULL) // check malloc
 	{
 		std::cout << "Error IMDisplay 3: MALLOC could not assign memory " << std::endl;
-		return 3;
+		return;
 	}
 
 	//copy data to newly allocated block
