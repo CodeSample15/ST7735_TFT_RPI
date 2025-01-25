@@ -95,10 +95,10 @@ class ST7735_TFT_graphics : public Print {
 	uint8_t TFTdrawBitmap24(uint8_t x, uint8_t y, uint8_t *pBmp, char w, char h);
 	uint8_t TFTdrawBitmap16(uint8_t x, uint8_t y, uint8_t *pBmp, char w, char h);
 
+	int16_t Color565(int16_t ,int16_t , int16_t );
 protected:
 
 	void pushColor(uint16_t color);
-	int16_t Color565(int16_t ,int16_t , int16_t );
 	void drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t color);
 	void fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta, uint16_t color);
 	
