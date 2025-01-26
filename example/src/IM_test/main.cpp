@@ -90,7 +90,7 @@ void IMTest(void)
 		for(int x=0; x<128; x++) {
 			for(int y=0; y<160; y++) {
 				uint16_t color = myTFT.Color565(r, 255, 255);
-				r+=10
+				r+=10;
 				myTFT.IMDrawPixel(x, y, color);
 			}
 		}
