@@ -86,13 +86,13 @@ void IMTest(void)
 {
 	for(int i=0; i<20; i++) {
 		myTFT.IMClear();
-		int16_t r;
+		int16_t r=0;
 		for(int x=0; x<128; x++) {
 			for(int y=0; y<160; y++) {
 				uint16_t color = myTFT.Color565(r, 255, 255);
-				r+=10;
 				myTFT.IMDrawPixel(x, y, color);
 			}
+			r+=10;
 		}
 		myTFT.IMDisplay();
 	}
