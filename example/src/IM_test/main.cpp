@@ -84,15 +84,20 @@ uint8_t Setup(void)
 
 void IMTest(void) 
 {
-    myTFT.IMClear();
-    for(int x=0; x<128; x++) {
-		for(int y=0; y<160; y++) {
-			myTFT.IMDrawPixel(x, y, 0xFAFF);
+	for(int i=0; i<20; i++) {
+		myTFT.IMClear();
+		int16_t r;
+		for(int x=0; x<128; x++) {
+			for(int y=0; y<160; y++) {
+				uint16_t color = myTFT.Color565(r, 255, 255);
+				r+=10
+				myTFT.IMDrawPixel(x, y, color);
+			}
 		}
-    }
-    myTFT.IMDisplay();
+		myTFT.IMDisplay();
+	}
 
-	TFT_MILLISEC_DELAY(5000);
+	TFT_MILLISEC_DELAY(500);
 }
 
 void EndTests(void)
