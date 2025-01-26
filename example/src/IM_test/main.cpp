@@ -84,16 +84,16 @@ uint8_t Setup(void)
 
 void IMTest(void) 
 {
+	int16_t r=0;
 	for(int i=0; i<20; i++) {
 		myTFT.IMClear();
-		int16_t r=0;
 		for(int x=0; x<128; x++) {
 			for(int y=0; y<160; y++) {
 				uint16_t color = myTFT.Color565(r, 255, 255);
 				myTFT.IMDrawPixel(x, y, color);
 			}
-			r+=10;
 		}
+		r+=10;
 		myTFT.IMDisplay();
 	}
 
