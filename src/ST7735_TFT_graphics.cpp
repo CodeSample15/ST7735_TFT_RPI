@@ -86,15 +86,8 @@ void ST7735_TFT_graphics ::IMDisplay() {
 		return;
 	}
 
-	//copy data to newly allocated block
-	for(uint32_t i=0; i<IMScreenBuffLen; i++)
-		buffer[i] = IMScreenBuff[i];
-
-	TFTsetAddrWindow(0, 0, IMScreenWidth - 1, IMScreenHeight - 1);
-	spiWriteDataBuffer(IMScreenBuff, IMScreenBuffLen);
-
-	//free new allocation
-	free(buffer);
+	//just call this library's already implemented bitmap drawer
+	TFTdrawBitmap16(0, 0, IMScreenBuff, IMScreenWidth, IMScreenHeight);
 }
 
 /*!
