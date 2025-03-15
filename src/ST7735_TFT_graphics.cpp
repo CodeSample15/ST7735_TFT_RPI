@@ -103,12 +103,20 @@ void ST7735_TFT_graphics ::IMDisplay() {
 	@param y  row co-ord
 	@param color 565 16-bit
 */
-void ST7735_TFT_graphics ::TFTdrawPixel(uint8_t x, uint8_t y, uint16_t color) {
+void ST7735_TFT_graphics ::TFTdrawPixel(uint8_t x, uint8_t y, uint16_t color, bool IM) {
 	if ((x >= _widthTFT) || (y >= _heightTFT))
 		return;
-	TFTsetAddrWindow(x, y, x + 1, y + 1);
-	writeData(color >> 8);
-	writeData(color & 0xFF);
+
+	if(IM) {
+		//In memory value update
+		IMDrawPixel(x, y, color);
+	}
+	else {
+		//Write to physical screen
+		TFTsetAddrWindow(x, y, x + 1, y + 1);
+		writeData(color >> 8);
+		writeData(color & 0xFF);
+	}
 }
 
 /*!
@@ -193,23 +201,32 @@ void ST7735_TFT_graphics ::TFTfillScreen(uint16_t color) {
 	@param h The height of the line
 	@param color The color of the line 565 16 Bit color
 */
-void ST7735_TFT_graphics ::TFTdrawFastVLine(uint8_t x, uint8_t y, uint8_t h, uint16_t color) {
+void ST7735_TFT_graphics ::TFTdrawFastVLine(uint8_t x, uint8_t y, uint8_t h, uint16_t color, bool IM) {
 	uint8_t hi, lo;
 	if ((x >= _widthTFT) || (y >= _heightTFT))
 		return;
 	if ((y + h - 1) >= _heightTFT)
 		h = _heightTFT - y;
-	hi = color >> 8;
-	lo = color;
-	TFTsetAddrWindow(x, y, x, y + h - 1);
-	TFT_DC_SetHigh;
 
-	if (_hardwareSPI == false){TFT_CS_SetLow;}
-	while (h--) {
-		spiWrite(hi);
-		spiWrite(lo);
+	if (IM) {
+		//Draw a line in memory
+		while(h--)
+			IMDrawPixel(x, y+h, color, IM);
 	}
-	if (_hardwareSPI == false){TFT_CS_SetHigh;}
+	else {
+		//Write to the physical screen
+		hi = color >> 8;
+		lo = color;
+		TFTsetAddrWindow(x, y, x, y + h - 1);
+		TFT_DC_SetHigh;
+
+		if (_hardwareSPI == false){TFT_CS_SetLow;}
+		while (h--) {
+			spiWrite(hi);
+			spiWrite(lo);
+		}
+		if (_hardwareSPI == false){TFT_CS_SetHigh;}
+	}
 }
 
 /*!
@@ -410,10 +427,10 @@ void ST7735_TFT_graphics ::TFTdrawLine(int16_t x0, int16_t y0, int16_t x1, int16
 	@param h height of the rectangle
 	@param color color to fill  rectangle 565 16-bit
 */
-void ST7735_TFT_graphics ::TFTfillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color) {
+void ST7735_TFT_graphics ::TFTfillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color, bool IM) {
 	int16_t i;
 	for (i = x; i < x + w; i++) {
-		TFTdrawFastVLine(i, y, h, color);
+		TFTdrawFastVLine(i, y, h, color, IM);
 	}
 }
 
@@ -546,7 +563,7 @@ void ST7735_TFT_graphics ::TFTfillTriangle(int16_t x0, int16_t y0, int16_t x1, i
 		4=ASCII character not in fonts range, 5=wrong font
 	@note for font #1-6 only
 */
-uint8_t ST7735_TFT_graphics ::TFTdrawChar(uint8_t x, uint8_t y, uint8_t character, uint16_t color, uint16_t bg, uint8_t size) {
+uint8_t ST7735_TFT_graphics ::TFTdrawChar(uint8_t x, uint8_t y, uint8_t character, uint16_t color, uint16_t bg, uint8_t size, bool IM) {
 
 	int8_t i, j;
 	uint8_t line;
@@ -612,15 +629,15 @@ uint8_t ST7735_TFT_graphics ::TFTdrawChar(uint8_t x, uint8_t y, uint8_t characte
 				if (line & 0x01)
 				{
 					if (size == 1)
-						TFTdrawPixel(x + i, y + j, color);
+						TFTdrawPixel(x + i, y + j, color, IM);
 					else
-						TFTfillRect(x + (i * size), y + (j * size), size, size, color);
+						TFTfillRect(x + (i * size), y + (j * size), size, size, color, IM);
 				}else if (bg != color)
 					{
 					if (size == 1)
-						TFTdrawPixel(x + i, y + j, bg);
+						TFTdrawPixel(x + i, y + j, bg, IM);
 					else
-						TFTfillRect(x + i*size, y + j*size, size, size, bg);
+						TFTfillRect(x + i*size, y + j*size, size, size, bg, IM);
 				}
 			}
 		}
@@ -647,7 +664,7 @@ void ST7735_TFT_graphics ::TFTsetTextWrap(bool w) {
 		5=drawChar method error,3=Invalid pointer object, 2=wrong font
 	@note for font #1-6 only
 */
-uint8_t ST7735_TFT_graphics ::TFTdrawText(uint8_t x, uint8_t y, char *pText, uint16_t color, uint16_t bg, uint8_t size) {
+uint8_t ST7735_TFT_graphics ::TFTdrawText(uint8_t x, uint8_t y, char *pText, uint16_t color, uint16_t bg, uint8_t size, bool IM) {
 
 	// Check if correct font
 	if(_FontNumber >= TFTFont_Bignum)
@@ -677,7 +694,7 @@ uint8_t ST7735_TFT_graphics ::TFTdrawText(uint8_t x, uint8_t y, char *pText, uin
 			cursorY = cursorY + size * 7 + 3;
 			if (cursorY > _heightTFT)cursorY = _heightTFT;
 		}
-		if(TFTdrawChar(cursorX, cursorY, *pText, color, bg, size) != 0)
+		if(TFTdrawChar(cursorX, cursorY, *pText, color, bg, size, IM) != 0)
 		{
 			std::cout <<  "Error TFTdrawText 5: Method TFTdrawChar failed" <<std::endl;
 			return 5;
@@ -1076,7 +1093,7 @@ uint8_t ST7735_TFT_graphics ::TFTdrawBitmap16(uint8_t x, uint8_t y, uint8_t *pBm
 		4=ASCII character not in fonts range, 5=wrong font
 	@note for font 7-12 only
 */
-uint8_t ST7735_TFT_graphics ::TFTdrawChar(uint8_t x, uint8_t y, uint8_t character, uint16_t color , uint16_t bg)
+uint8_t ST7735_TFT_graphics ::TFTdrawChar(uint8_t x, uint8_t y, uint8_t character, uint16_t color , uint16_t bg, bool IM)
 {
 	uint8_t FontSizeMod = 0;
 	uint8_t i, j;
@@ -1135,10 +1152,10 @@ uint8_t ST7735_TFT_graphics ::TFTdrawChar(uint8_t x, uint8_t y, uint8_t characte
 		{
 			if (ctemp & 0x80)
 			{
-				TFTdrawPixel(x, y, color);
+				TFTdrawPixel(x, y, color, IM);
 			} else
 			{
-				TFTdrawPixel(x, y, bg);
+				TFTdrawPixel(x, y, bg, IM);
 			}
 
 			ctemp <<= 1;
@@ -1165,7 +1182,7 @@ uint8_t ST7735_TFT_graphics ::TFTdrawChar(uint8_t x, uint8_t y, uint8_t characte
 		5=drawChar method error,3=Invalid pointer object, 2=wrong font
 	@note for font 7-12 only
 */
-uint8_t ST7735_TFT_graphics ::TFTdrawText(uint8_t x, uint8_t y, char *pText, uint16_t color, uint16_t bg)
+uint8_t ST7735_TFT_graphics ::TFTdrawText(uint8_t x, uint8_t y, char *pText, uint16_t color, uint16_t bg, bool IM)
 {
 	// Check for correct font
 	if (_FontNumber < TFTFont_Bignum)
@@ -1196,7 +1213,7 @@ uint8_t ST7735_TFT_graphics ::TFTdrawText(uint8_t x, uint8_t y, char *pText, uin
 				y = x = 0;
 			}
 		}
-		if(TFTdrawChar(x, y, *pText, color, bg) != 0)
+		if(TFTdrawChar(x, y, *pText, color, bg, IM) != 0)
 		{
 			std::cout << "Error TFTdrawText 5B: TFTdrawChar method failed" << std::endl;
 			return 5;

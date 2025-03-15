@@ -60,14 +60,14 @@ class ST7735_TFT_graphics : public Print {
 	void IMDisplay(); //write in-memory display buffer to screen over SPI
 	
 	// Shapes and lines
-	void TFTdrawPixel(uint8_t, uint8_t, uint16_t);
+	void TFTdrawPixel(uint8_t, uint8_t, uint16_t, bool IM=false);
 	void TFTdrawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
-	void TFTdrawFastVLine(uint8_t x, uint8_t y, uint8_t h, uint16_t color);
+	void TFTdrawFastVLine(uint8_t x, uint8_t y, uint8_t h, uint16_t color, bool IM=false);
 	void TFTdrawFastHLine(uint8_t x, uint8_t y, uint8_t w, uint16_t color);
 
 	void TFTdrawRectWH(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color);
 	uint8_t TFTfillRectangle(uint8_t, uint8_t, uint8_t, uint8_t, uint16_t);
-	void TFTfillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color);
+	void TFTfillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color, bool IM=false);
 
 	void TFTdrawRoundRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t r, uint16_t color);
 	void TFTfillRoundRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t r, uint16_t color);
@@ -81,10 +81,10 @@ class ST7735_TFT_graphics : public Print {
 	// Text
 	void TFTsetTextWrap(bool w);
 	void TFTFontNum(TFT_Font_Type_e FontNumber);
-	uint8_t TFTdrawChar(uint8_t x, uint8_t y, uint8_t c, uint16_t color, uint16_t bg, uint8_t size);
-	uint8_t TFTdrawChar(uint8_t x, uint8_t y, uint8_t c, uint16_t color ,uint16_t bg);
-	uint8_t TFTdrawText(uint8_t x, uint8_t y, char *ptext, uint16_t color, uint16_t bg, uint8_t size);
-	uint8_t TFTdrawText(uint8_t x, uint8_t y, char *pText, uint16_t color, uint16_t bg);
+	uint8_t TFTdrawChar(uint8_t x, uint8_t y, uint8_t c, uint16_t color, uint16_t bg, uint8_t size, bool IM=false);
+	uint8_t TFTdrawChar(uint8_t x, uint8_t y, uint8_t c, uint16_t color ,uint16_t bg, bool IM=false);
+	uint8_t TFTdrawText(uint8_t x, uint8_t y, char *ptext, uint16_t color, uint16_t bg, uint8_t size, bool IM=false);
+	uint8_t TFTdrawText(uint8_t x, uint8_t y, char *pText, uint16_t color, uint16_t bg, bool IM=false);
 	void setTextColor(uint16_t c);
 	void setTextColor(uint16_t c, uint16_t bg);
 	void setTextSize(uint8_t s);
