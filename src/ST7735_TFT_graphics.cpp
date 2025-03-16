@@ -91,7 +91,7 @@ void ST7735_TFT_graphics ::IMDisplay() {
 		buffer[i] = IMScreenBuff[i];
 
 	TFTsetAddrWindow(0, 0, IMScreenWidth - 1, IMScreenHeight - 1);
-	spiWriteDataBuffer(IMScreenBuff, IMScreenBuffLen);
+	spiWriteDataBuffer(buffer, IMScreenBuffLen);
 
 	//free new allocation
 	free(buffer);
