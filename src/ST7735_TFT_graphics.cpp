@@ -211,7 +211,7 @@ void ST7735_TFT_graphics ::TFTdrawFastVLine(uint8_t x, uint8_t y, uint8_t h, uin
 	if (IM) {
 		//Draw a line in memory
 		while(h--)
-			IMDrawPixel(x, y+h, color, IM);
+			IMDrawPixel(x, y+h, color);
 	}
 	else {
 		//Write to the physical screen
