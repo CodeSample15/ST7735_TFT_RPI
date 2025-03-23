@@ -22,7 +22,8 @@
 #SRC=src/Frame_rate_test
 #SRC=src/Frame_rate_test_2
 
-SRC=src/IM_test
+#SRC=src/IM_test
+SRC=src/Hello_world_IM
 # ************************************************
 
 # lang c plus plus
