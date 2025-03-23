@@ -11,8 +11,11 @@
 #include <bcm2835.h> 
 #include "ST7735_TFT.hpp"
 
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 160
+
 // Section :: Globals 
-ST7735_TFT myTFT;
+ST7735_TFT myTFT(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 //  Section ::  Function Headers 
 
@@ -55,8 +58,8 @@ uint8_t Setup(void)
 // ** USER OPTION 2 Screen Setup **
 	uint8_t OFFSET_COL = 0;  // 2, These offsets can be adjusted for any issues->
 	uint8_t OFFSET_ROW = 0; // 3, with manufacture tolerance/defects
-	uint16_t TFT_WIDTH = 128;// Screen width in pixels
-	uint16_t TFT_HEIGHT = 128; // Screen height in pixels
+	uint16_t TFT_WIDTH = SCREEN_WIDTH;// Screen width in pixels
+	uint16_t TFT_HEIGHT = SCREEN_HEIGHT; // Screen height in pixels
 	myTFT.TFTInitScreenSize(OFFSET_COL, OFFSET_ROW , TFT_WIDTH , TFT_HEIGHT);
 // ***********************************
 
