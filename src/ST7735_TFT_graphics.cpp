@@ -236,22 +236,30 @@ void ST7735_TFT_graphics ::TFTdrawFastVLine(uint8_t x, uint8_t y, uint8_t h, uin
 	@param w The width of the line
 	@param color The color of the line 565 16 Bit color
 */
-void ST7735_TFT_graphics ::TFTdrawFastHLine(uint8_t x, uint8_t y, uint8_t w, uint16_t color) {
+void ST7735_TFT_graphics ::TFTdrawFastHLine(uint8_t x, uint8_t y, uint8_t w, uint16_t color, bool IM) {
 	uint8_t hi, lo;
 	if ((x >= _widthTFT) || (y >= _heightTFT))
 		return;
 	if ((x + w - 1) >= _widthTFT)
 		w = _widthTFT - x;
-	hi = color >> 8;
-	lo = color;
-	TFTsetAddrWindow(x, y, x + w - 1, y);
-	TFT_DC_SetHigh;
-	if (_hardwareSPI == false){TFT_CS_SetLow;}
-	while (w--) {
-		spiWrite(hi);
-		spiWrite(lo);
+
+	if(IM) {
+		//Draw a line in memory
+		while(w--)
+			IMDrawPixel(x+w, y, color);
 	}
-	if (_hardwareSPI == false){TFT_CS_SetHigh;}
+	else {
+		hi = color >> 8;
+		lo = color;
+		TFTsetAddrWindow(x, y, x + w - 1, y);
+		TFT_DC_SetHigh;
+		if (_hardwareSPI == false){TFT_CS_SetLow;}
+		while (w--) {
+			spiWrite(hi);
+			spiWrite(lo);
+		}
+		if (_hardwareSPI == false){TFT_CS_SetHigh;}
+	}
 }
 
 /*!
@@ -369,11 +377,11 @@ void ST7735_TFT_graphics ::TFTfillCircle(int16_t x0, int16_t y0, int16_t r, uint
 	@param h height of the rectangle
 	@param color color to fill  rectangle 565 16-bit
 */
-void ST7735_TFT_graphics ::TFTdrawRectWH(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color) {
-	TFTdrawFastHLine(x, y, w, color);
-	TFTdrawFastHLine(x, y + h - 1, w, color);
-	TFTdrawFastVLine(x, y, h, color);
-	TFTdrawFastVLine(x + w - 1, y, h, color);
+void ST7735_TFT_graphics ::TFTdrawRectWH(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color, bool IM) {
+	TFTdrawFastHLine(x, y, w, color, IM);
+	TFTdrawFastHLine(x, y + h - 1, w, color, IM);
+	TFTdrawFastVLine(x, y, h, color, IM);
+	TFTdrawFastVLine(x + w - 1, y, h, color, IM);
 }
 
 /*!

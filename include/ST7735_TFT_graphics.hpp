@@ -63,9 +63,9 @@ class ST7735_TFT_graphics : public Print {
 	void TFTdrawPixel(uint8_t, uint8_t, uint16_t, bool IM=false);
 	void TFTdrawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
 	void TFTdrawFastVLine(uint8_t x, uint8_t y, uint8_t h, uint16_t color, bool IM=false);
-	void TFTdrawFastHLine(uint8_t x, uint8_t y, uint8_t w, uint16_t color);
+	void TFTdrawFastHLine(uint8_t x, uint8_t y, uint8_t w, uint16_t color, bool IM=false);
 
-	void TFTdrawRectWH(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color);
+	void TFTdrawRectWH(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color, bool IM=false);
 	uint8_t TFTfillRectangle(uint8_t, uint8_t, uint8_t, uint8_t, uint16_t);
 	void TFTfillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color, bool IM=false);
 
