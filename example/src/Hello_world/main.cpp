@@ -81,7 +81,7 @@ void HelloWorld(void)
 	std::cout << "Hello World" << std::endl;
 	myTFT.TFTfillScreen(ST7735_BLACK);
 	myTFT.TFTFontNum(myTFT.TFTFont_Default);
-	myTFT.TFTdrawText(15, 30, teststr1, ST7735_WHITE, ST7735_BLACK, 1);
+	myTFT.TFTdrawText(15, 30, teststr1, ST7735_WHITE, ST7735_BLACK, 1, false);
 	TFT_MILLISEC_DELAY(5000);
 }
 
